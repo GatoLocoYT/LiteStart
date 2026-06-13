@@ -1,0 +1,331 @@
+/* ==========================================
+   CONFIGURACIÓN GENERAL
+   ========================================== */
+
+QWidget {
+    color: #1C1C1C;
+    font-size: 14px;
+    font-family: "Segoe UI Variable";
+}
+
+QLabel {
+    color: #1C1C1C;
+    background-color: transparent;
+}
+
+/* ==========================================
+   CUERPO PRINCIPAL
+   ========================================== */
+
+#MainBody {
+    background-color: #FFFFFF;
+
+    border: 1px solid #E5E5E5;
+
+    border-radius: 12px;
+}
+
+/* ==========================================
+   BARRA INFERIOR
+   ========================================== */
+
+#BottomBar {
+
+    background-color: #EFEFEF;
+
+    border-top: 1px solid #E5E5E5;
+
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-radius: 12px;
+}
+
+/* ==========================================
+   TEXTOS SECUNDARIOS
+   ========================================== */
+
+#StatusLabel {
+
+    color: #5F5F5F;
+
+    font-size: 14px;
+
+    font-weight: normal;
+}
+
+/* ==========================================
+   BUSCADOR
+   ========================================== */
+
+QLineEdit {
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E5E5E5;
+
+    border-bottom: 2px solid #858585;
+
+    border-radius: 8px;
+
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+    padding-left: 12px;
+    padding-right: 12px;
+
+    color: #1C1C1C;
+}
+
+QLineEdit:hover {
+
+    background-color: #FAFAFA;
+
+    border-bottom: 2px solid #5F5F5F;
+}
+
+QLineEdit:focus {
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E5E5E5;
+
+    border-bottom: 2px solid #0078D4;
+}
+
+#SearchContainer {
+    background-color: transparent;
+}
+
+/* ==========================================
+   BOTÓN CERRAR
+   ========================================== */
+
+QPushButton#CloseButton {
+
+    background-color: transparent;
+
+    border: none;
+
+    color: #5F5F5F;
+
+    min-width: 32px;
+    max-width: 32px;
+
+    min-height: 32px;
+    max-height: 32px;
+
+    font-size: 14px;
+}
+
+QPushButton#CloseButton:hover {
+
+    background-color: #E81123;
+
+    color: #FFFFFF;
+
+    border-radius: 4px;
+}
+
+QPushButton#CloseButton:pressed {
+
+    background-color: #F1707A;
+
+    color: #FFFFFF;
+}
+
+/* ==========================================
+   APPS ANCLADAS
+   ========================================== */
+
+QPushButton#PinnedAppButton {
+
+    background-color: transparent;
+
+    border: none;
+
+    border-radius: 6px;
+
+    padding: 8px;
+
+    font-size: 12px;
+}
+
+QPushButton#PinnedAppButton:hover {
+
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+QPushButton#PinnedAppButton:pressed {
+
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================
+   TÍTULOS DE SECCIÓN
+   ========================================== */
+
+#SectionTitle {
+
+    color: #1C1C1C;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    margin-top: 8px;
+
+    margin-bottom: 4px;
+}
+QPushButton#PinnedAppButton {
+
+    background-color: transparent;
+
+    border: none;
+
+    border-radius: 6px;
+
+    min-width: 64px;
+    max-width: 64px;
+
+    min-height: 64px;
+    max-height: 64px;
+}
+#AppLabel {
+
+    font-size: 12px;
+
+    color: #1C1C1C;
+
+    background-color: transparent;
+}
+/* ==========================================
+   USUARIO
+   ========================================== */
+
+#UserLabel {
+
+    color: #1C1C1C;
+
+    font-size: 14px;
+
+    font-weight: 500;
+}
+
+/* ==========================================
+   BOTÓN DE ENERGÍA
+   ========================================== */
+
+QPushButton#PowerButton {
+
+    background-color: transparent;
+
+    border: none;
+
+    border-radius: 6px;
+
+    min-width: 36px;
+    max-width: 36px;
+
+    min-height: 36px;
+    max-height: 36px;
+
+    font-size: 18px;
+
+    color: #5F5F5F;
+}
+
+QPushButton#PowerButton:hover {
+
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+QPushButton#PowerButton:pressed {
+
+    background-color: rgba(0, 0, 0, 0.08);
+}
+/* ==========================================
+   POWER MENU
+   ========================================== */
+
+QMenu#PowerMenu {
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E5E5E5;
+
+    padding: 6px;
+
+    border-radius: 8px;
+}
+
+QMenu#PowerMenu::item {
+
+    padding: 8px 24px;
+
+    border-radius: 6px;
+
+    color: #1C1C1C;
+}
+
+QMenu#PowerMenu::item:selected {
+
+    background-color: rgba(0, 0, 0, 0.05);
+}
+/* ==========================================
+   RESULTADOS DE BÚSQUEDA
+   ========================================== */
+
+QPushButton#SearchResult {
+
+    background-color: transparent;
+
+    border: none;
+
+    border-radius: 6px;
+
+    text-align: left;
+
+    padding: 10px;
+
+    color: #1C1C1C;
+}
+
+QPushButton#SearchResult:hover {
+
+    background-color: rgba(0,0,0,0.05);
+}
+
+QPushButton#SearchResult:pressed {
+
+    background-color: rgba(0,0,0,0.08);
+}
+#SearchCategory {
+
+    color: #5F5F5F;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    margin-top: 8px;
+}
+
+QPushButton#BestMatch {
+
+    text-align: left;
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 12px;
+
+    background-color: rgba(0,0,0,0.04);
+
+    font-weight: 600;
+}
+
+QPushButton#BestMatch:hover {
+
+    background-color: rgba(0,0,0,0.08);
+}

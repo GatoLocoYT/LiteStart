@@ -1,0 +1,5 @@
+tools/download_icons.py
+tools/
+ui/__pycache__/
+tests/
+core/__pycache__/
