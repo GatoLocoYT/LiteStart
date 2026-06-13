@@ -5,12 +5,14 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QApplication,
-    QFrame
+    QFrame,
+    QScrollArea,
 )
 
 from PyQt6.QtCore import Qt, QTimer
 
-from ui import search_results
+from core.search_engine import search
+
 from ui.pinned_apps import PinnedApps
 from ui.power_menu import PowerButton
 from ui.search_bar import SearchBar
@@ -48,7 +50,14 @@ class StartMenu(QWidget):
         )
 
         root_layout = QVBoxLayout(self)
-        root_layout.setContentsMargins(0, 0, 0, 0)
+
+        root_layout.setContentsMargins(
+            0,
+            0,
+            0,
+            0
+        )
+
         root_layout.setSpacing(0)
 
         # ==================================================
@@ -56,9 +65,14 @@ class StartMenu(QWidget):
         # ==================================================
 
         main_body = QWidget()
-        main_body.setObjectName("MainBody")
 
-        body_layout = QVBoxLayout(main_body)
+        main_body.setObjectName(
+            "MainBody"
+        )
+
+        body_layout = QVBoxLayout(
+            main_body
+        )
 
         body_layout.setContentsMargins(
             24,
@@ -67,7 +81,9 @@ class StartMenu(QWidget):
             24
         )
 
-        body_layout.setSpacing(16)
+        body_layout.setSpacing(
+            16
+        )
 
         # ==================================================
         # BARRA SUPERIOR
@@ -78,15 +94,22 @@ class StartMenu(QWidget):
         top_bar.addStretch()
 
         close_button = QPushButton("✕")
-        close_button.setObjectName("CloseButton")
+
+        close_button.setObjectName(
+            "CloseButton"
+        )
 
         close_button.clicked.connect(
             self.close
         )
 
-        top_bar.addWidget(close_button)
+        top_bar.addWidget(
+            close_button
+        )
 
-        body_layout.addLayout(top_bar)
+        body_layout.addLayout(
+            top_bar
+        )
 
         # ==================================================
         # BUSCADOR
@@ -98,20 +121,16 @@ class StartMenu(QWidget):
             self.search_bar
         )
 
+        # ==================================================
+        # RESULTADOS
+        # ==================================================
+
         self.search_results = SearchResults()
 
         self.search_results.hide()
 
-        body_layout.addWidget(
-            self.search_results
-        )
-
-        self.search_bar.text_changed.connect(
-            self.on_search_changed
-        )
-
         # ==================================================
-        # APLICACIONES ANCLADAS
+        # APPS ANCLADAS
         # ==================================================
 
         self.section_title = QLabel(
@@ -124,10 +143,78 @@ class StartMenu(QWidget):
 
         self.pinned_apps = PinnedApps()
 
-        body_layout.addWidget(self.section_title)
-        body_layout.addWidget(self.pinned_apps)
+        # ==================================================
+        # SCROLL AREA
+        # ==================================================
 
-        body_layout.addStretch()
+        scroll_area = QScrollArea()
+
+        scroll_area.setWidgetResizable(
+            True
+        )
+
+        scroll_area.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+
+        scroll_area.setFrameShape(
+            QFrame.Shape.NoFrame
+        )
+
+        content_widget = QWidget()
+
+        content_widget.setObjectName(
+            "ContentWidget"
+        )
+
+        content_layout = QVBoxLayout(
+            content_widget
+        )
+
+        content_layout.setContentsMargins(
+            0,
+            0,
+            0,
+            0
+        )
+
+        content_layout.setSpacing(
+            12
+        )
+
+        content_layout.addWidget(
+            self.search_results
+        )
+
+        content_layout.addWidget(
+            self.section_title
+        )
+
+        content_layout.addWidget(
+            self.pinned_apps
+        )
+
+        content_layout.addStretch()
+
+        scroll_area.setWidget(
+            content_widget
+        )
+
+        body_layout.addWidget(
+            scroll_area
+        )
+
+        self.search_bar.text_changed.connect(
+            self.on_search_changed
+        )
+
+        self.search_results.result_clicked.connect(
+            self.on_result_clicked
+        )
+
+        self.pinned_apps.app_clicked.connect(
+            self.on_pinned_app_clicked
+        )
 
         # ==================================================
         # BARRA INFERIOR
@@ -139,7 +226,9 @@ class StartMenu(QWidget):
             "BottomBar"
         )
 
-        bottom_bar.setFixedHeight(70)
+        bottom_bar.setFixedHeight(
+            70
+        )
 
         bottom_layout = QHBoxLayout(
             bottom_bar
@@ -152,7 +241,9 @@ class StartMenu(QWidget):
             0
         )
 
-        bottom_layout.setSpacing(10)
+        bottom_layout.setSpacing(
+            10
+        )
 
         user_label = QLabel(
             "Usuario"
@@ -187,8 +278,31 @@ class StartMenu(QWidget):
         )
 
     # ======================================================
-    # EVENTOS
+    # LANZADOR
     # ======================================================
+
+    def launch_app(self, app_name):
+
+        print(
+            f"Ejecutando: {app_name}"
+        )
+
+    def on_pinned_app_clicked(self, app_name):
+
+        self.launch_app(
+            app_name
+        )
+
+    def on_result_clicked(self, result_name):
+
+        self.launch_app(
+            result_name
+        )
+
+    # ======================================================
+    # BÚSQUEDA
+    # ======================================================
+
     def on_search_changed(self, text):
 
         searching = len(
@@ -207,12 +321,49 @@ class StartMenu(QWidget):
             not searching
         )
 
+        if searching:
+
+            results = search(
+                text
+            )
+
+            self.search_results.update_results(
+                results
+            )
+
+    # ======================================================
+    # EVENTOS
+    # ======================================================
+
     def keyPressEvent(self, event):
 
         if event.key() == Qt.Key.Key_Escape:
-            self.close()
 
-        super().keyPressEvent(event)
+            self.close()
+        
+        if event.key() == Qt.Key.Key_Down:
+
+            self.search_results.select_next()
+            return
+
+        if event.key() == Qt.Key.Key_Up:
+
+            self.search_results.select_previous()
+            return
+
+        if event.key() == Qt.Key.Key_Return:
+
+            self.search_results.activate_current()
+            return
+
+        if event.key() == Qt.Key.Key_Enter:
+
+            self.search_results.activate_current()
+            return
+
+        super().keyPressEvent(
+            event
+        )
 
     def focusOutEvent(self, event):
 
@@ -221,17 +372,21 @@ class StartMenu(QWidget):
             self.check_focus
         )
 
-        super().focusOutEvent(event)
+        super().focusOutEvent(
+            event
+        )
 
     def check_focus(self):
 
         active_window = QApplication.activeWindow()
 
         if active_window is None:
+
             self.close()
             return
 
         if active_window != self:
+
             self.close()
 
     # ======================================================
@@ -254,5 +409,7 @@ class StartMenu(QWidget):
             - 10
         )
 
-        self.move(x, y)
-    
+        self.move(
+            x,
+            y
+        )

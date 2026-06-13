@@ -1,3 +1,5 @@
+from PyQt6.QtCore import pyqtSignal
+
 from PyQt6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -8,81 +10,192 @@ from PyQt6.QtWidgets import (
 
 class SearchResults(QWidget):
 
+    result_clicked = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
+
+        self.current_index = 0
+
+        self.result_buttons = []
 
         self.setup_ui()
 
     def setup_ui(self):
 
-        layout = QVBoxLayout(self)
+        self.layout = QVBoxLayout(self)
 
-        layout.setContentsMargins(
+        self.layout.setContentsMargins(
             0,
             0,
             0,
             0
         )
 
-        layout.setSpacing(6)
+        self.layout.setSpacing(6)
 
-        best_match_title = QLabel(
+    def clear_results(self):
+
+        while self.layout.count():
+
+            item = self.layout.takeAt(0)
+
+            widget = item.widget()
+
+            if widget:
+
+                widget.deleteLater()
+
+    def create_result_button(
+        self,
+        text,
+        object_name
+    ):
+
+        button = QPushButton(text)
+
+        button.setObjectName(
+            object_name
+        )
+
+        button.clicked.connect(
+            lambda: self.result_clicked.emit(text)
+        )
+
+        return button
+
+    def update_results(self, results):
+
+        self.clear_results()
+
+        self.result_buttons.clear()
+
+        self.current_index = 0
+
+        if not results:
+
+            no_results = QLabel(
+                "Sin resultados"
+            )
+
+            no_results.setObjectName(
+                "SearchCategory"
+            )
+
+            self.layout.addWidget(
+                no_results
+            )
+
+            return
+
+        best_title = QLabel(
             "Mejor coincidencia"
         )
 
-        best_match_title.setObjectName(
+        best_title.setObjectName(
             "SearchCategory"
         )
 
-        layout.addWidget(
-            best_match_title
+        self.layout.addWidget(
+            best_title
         )
 
-        best_match = QPushButton(
-            "Firefox"
-        )
-
-        best_match.setObjectName(
+        best_match = self.create_result_button(
+            results[0],
             "BestMatch"
         )
 
-        layout.addWidget(
+        self.result_buttons.append(
             best_match
         )
 
-        results_title = QLabel(
-            "Resultados"
+        self.layout.addWidget(
+            best_match
         )
 
-        results_title.setObjectName(
-            "SearchCategory"
-        )
+        if len(results) > 1:
 
-        layout.addWidget(
-            results_title
-        )
-
-        fake_results = [
-            "Firefox Developer Edition",
-            "Firewatch",
-            "Firewall",
-            "Configuración",
-            "Documentos",
-            "Imágenes"
-        ]
-
-        for result in fake_results:
-
-            button = QPushButton(
-                result
+            results_title = QLabel(
+                "Resultados"
             )
 
-            button.setObjectName(
-                "SearchResult"
+            results_title.setObjectName(
+                "SearchCategory"
             )
 
-            layout.addWidget(
+            self.layout.addWidget(
+                results_title
+            )
+
+            for result in results[1:]:
+
+                button = self.create_result_button(
+                    result,
+                    "SearchResult"
+                )
+
+                self.result_buttons.append(
+                    button
+                )
+
+                self.layout.addWidget(
+                    button
+                )
+
+        self.update_selection()
+
+        self.layout.addStretch()
+
+    def update_selection(self):
+
+        for index, button in enumerate(
+            self.result_buttons
+        ):
+
+            button.setProperty(
+                "selected",
+                index == self.current_index
+            )
+
+            button.style().unpolish(
                 button
             )
 
-        layout.addStretch()
+            button.style().polish(
+                button
+            )
+
+            button.update()
+
+    def select_next(self):
+
+        if not self.result_buttons:
+            return
+
+        self.current_index = min(
+            self.current_index + 1,
+            len(self.result_buttons) - 1
+        )
+
+        self.update_selection()
+
+    def select_previous(self):
+
+        if not self.result_buttons:
+            return
+
+        self.current_index = max(
+            self.current_index - 1,
+            0
+        )
+
+        self.update_selection()
+
+    def activate_current(self):
+
+        if not self.result_buttons:
+            return
+
+        self.result_buttons[
+            self.current_index
+        ].click()

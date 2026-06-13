@@ -329,3 +329,69 @@ QPushButton#BestMatch:hover {
 
     background-color: rgba(0,0,0,0.08);
 }
+/* ==========================================
+   SCROLL AREA
+   ========================================== */
+
+QScrollArea {
+
+    border: none;
+
+    background: transparent;
+}
+
+QScrollBar:vertical {
+
+    background: transparent;
+
+    width: 8px;
+
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical {
+
+    background: rgba(0, 0, 0, 0.20);
+
+    border-radius: 4px;
+
+    min-height: 24px;
+}
+
+QScrollBar::handle:vertical:hover {
+
+    background: rgba(0, 0, 0, 0.35);
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+
+    height: 0px;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+
+    background: transparent;
+}
+#ContentWidget {
+
+    background-color: transparent;
+}
+QScrollArea {
+
+    background-color: transparent;
+
+    border: none;
+}
+
+QScrollArea > QWidget > QWidget {
+
+    background-color: transparent;
+}
+QPushButton#BestMatch[selected="true"],
+QPushButton#SearchResult[selected="true"] {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #1C1C1C;
+    border-radius: 8px;
+}
