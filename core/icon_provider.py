@@ -1,8 +1,16 @@
 from PyQt6.QtGui import QIcon
 
-import win32com.client
+import platform
 
 from core.app_indexer import get_startmenu_apps
+
+
+IS_WINDOWS = (
+    platform.system() == "Windows"
+)
+
+if IS_WINDOWS:
+    import win32com.client
 
 
 DEFAULT_ICON = QIcon(
@@ -13,6 +21,10 @@ APPS_CACHE = get_startmenu_apps()
 
 
 def get_app_icon(app_name):
+
+    if not IS_WINDOWS:
+
+        return DEFAULT_ICON
 
     print("\n====================")
     print(f"Buscando icono para: {app_name}")
@@ -32,7 +44,7 @@ def get_app_icon(app_name):
 
         return DEFAULT_ICON
 
-    print(f"Registro encontrado:")
+    print("Registro encontrado:")
     print(app)
 
     try:
@@ -47,12 +59,19 @@ def get_app_icon(app_name):
 
         target = shortcut.Targetpath
 
-        print(f"Shortcut: {app['path']}")
-        print(f"Target: {target}")
+        print(
+            f"Shortcut: {app['path']}"
+        )
+
+        print(
+            f"Target: {target}"
+        )
 
         if not target:
 
-            print("Target vacío")
+            print(
+                "Target vacío"
+            )
 
             return DEFAULT_ICON
 
@@ -79,7 +98,7 @@ def get_app_icon(app_name):
     except Exception as e:
 
         print(
-            f"ERROR obteniendo icono:"
+            "ERROR obteniendo icono:"
         )
 
         print(e)

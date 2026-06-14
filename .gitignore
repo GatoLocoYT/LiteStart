@@ -3,3 +3,6 @@ tools/
 ui/__pycache__/
 tests/
 core/__pycache__/
+venv/
+*.pyc
+__pycache__/
