@@ -1,19 +1,32 @@
 import os
+import platform
+import subprocess
 
 from core.app_indexer import (
-    get_startmenu_apps
+    get_installed_apps
 )
 
-APPS_CACHE = get_startmenu_apps()
+APPS_CACHE = get_installed_apps()
+
+IS_WINDOWS = (
+    platform.system() == "Windows"
+)
+
+IS_LINUX = (
+    platform.system() == "Linux"
+)
 
 
 def launch_app(app_name):
 
     for app in APPS_CACHE:
 
-        if app["name"] == app_name:
+        if app["name"] != app_name:
+            continue
 
-            try:
+        try:
+
+            if IS_WINDOWS:
 
                 os.startfile(
                     app["path"]
@@ -21,13 +34,21 @@ def launch_app(app_name):
 
                 return True
 
-            except Exception as e:
+            elif IS_LINUX:
 
-                print(
-                    f"Error lanzando {app_name}: {e}"
+                subprocess.Popen(
+                    app["exec"].split()
                 )
 
-                return False
+                return True
+
+        except Exception as e:
+
+            print(
+                f"Error lanzando {app_name}: {e}"
+            )
+
+            return False
 
     print(
         f"No encontrada: {app_name}"
