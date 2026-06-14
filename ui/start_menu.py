@@ -103,7 +103,7 @@ class StartMenu(QWidget):
         )
 
         close_button.clicked.connect(
-            self.close
+            self.hide_menu
         )
 
         top_bar.addWidget(
@@ -298,7 +298,7 @@ class StartMenu(QWidget):
         )
 
         if success:
-            self.close()
+            self.hide_menu()
         
 
     def on_pinned_app_clicked(self, app_name):
@@ -353,7 +353,8 @@ class StartMenu(QWidget):
 
         if event.key() == Qt.Key.Key_Escape:
 
-            self.close()
+            self.hide_menu()
+            return
         
         if event.key() == Qt.Key.Key_Down:
 
@@ -379,6 +380,10 @@ class StartMenu(QWidget):
             event
         )
 
+    def hide_menu(self):
+
+        self.hide()
+
     def focusOutEvent(self, event):
 
         QTimer.singleShot(
@@ -396,12 +401,12 @@ class StartMenu(QWidget):
 
         if active_window is None:
 
-            self.close()
+            self.hide_menu()
             return
 
         if active_window != self:
 
-            self.close()
+            self.hide_menu()
 
     # ======================================================
     # POSICIONAMIENTO
