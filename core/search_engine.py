@@ -1,8 +1,6 @@
-from core.app_indexer import (
-    get_startmenu_apps
-)
+from core.app_indexer import get_installed_apps
 
-APPS_CACHE = get_startmenu_apps()
+APPS_CACHE = get_installed_apps()
 
 
 def calculate_score(query, item_name):
