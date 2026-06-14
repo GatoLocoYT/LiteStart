@@ -1,12 +1,11 @@
 import os
+import shlex
 import platform
 import subprocess
 
 from core.app_indexer import (
     get_installed_apps
 )
-
-APPS_CACHE = get_installed_apps()
 
 IS_WINDOWS = (
     platform.system() == "Windows"
@@ -19,7 +18,9 @@ IS_LINUX = (
 
 def launch_app(app_name):
 
-    for app in APPS_CACHE:
+    apps_cache = get_installed_apps()
+
+    for app in apps_cache:
 
         if app["name"] != app_name:
             continue
@@ -36,8 +37,16 @@ def launch_app(app_name):
 
             elif IS_LINUX:
 
+                command = shlex.split(
+                    app["exec"]
+                )
+
+                print(
+                    f"Lanzando Linux: {command}"
+                )
+
                 subprocess.Popen(
-                    app["exec"].split()
+                    command
                 )
 
                 return True
