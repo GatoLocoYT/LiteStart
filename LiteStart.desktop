@@ -10,7 +10,5 @@ Path=/home/usuario/LiteStart
 
 Icon=/home/usuario/LiteStart/assets/icons/default.svg
 
-Terminal=true
-
 Categories=Utility;
 StartupNotify=true
