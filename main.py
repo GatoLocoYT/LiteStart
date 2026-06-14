@@ -1,11 +1,21 @@
 import sys
 
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import (
+    QApplication,
+    QSystemTrayIcon,
+    QMenu
+)
+
+from PyQt6.QtGui import (
+    QIcon,
+    QAction
+)
 
 from ui.start_menu import StartMenu
 
 from core.paths import (
-    STYLES_DIR
+    STYLES_DIR,
+    ASSETS_DIR
 )
 
 
@@ -33,6 +43,83 @@ def main():
     menu = StartMenu()
 
     menu.show()
+
+    print(
+        "Tray disponible:",
+        QSystemTrayIcon.isSystemTrayAvailable()
+    )
+
+    tray = QSystemTrayIcon()
+
+    tray.setIcon(
+        QIcon(
+            str(
+                ASSETS_DIR
+                / "icons"
+                / "default.svg"
+            )
+        )
+    )
+
+    tray.setToolTip(
+        "LiteStart"
+    )
+
+    tray_menu = QMenu()
+
+    show_action = QAction(
+        "Mostrar LiteStart",
+        tray
+    )
+
+    exit_action = QAction(
+        "Salir",
+        tray
+    )
+
+    tray_menu.addAction(
+        show_action
+    )
+
+    tray_menu.addSeparator()
+
+    tray_menu.addAction(
+        exit_action
+    )
+
+    tray.setContextMenu(
+        tray_menu
+    )
+
+    show_action.triggered.connect(
+        menu.show
+    )
+
+    exit_action.triggered.connect(
+        app.quit
+    )
+
+    def on_tray_activated(reason):
+
+        if (
+            reason
+            ==
+            QSystemTrayIcon.ActivationReason.Trigger
+        ):
+
+            if menu.isVisible():
+
+                menu.hide()
+
+            else:
+
+                menu.show()
+
+    tray.activated.connect(
+        on_tray_activated
+    )
+
+    tray.show()
 
     sys.exit(
         app.exec()
