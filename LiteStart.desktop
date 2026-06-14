@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=LiteStart
+Comment=Launcher ligero para Linux
+Exec=python3 /home/usuario/LiteStart/main.py
+Icon=/home/usuario/LiteStart/assets/icons/default.svg
+Terminal=false
+Categories=Utility;
+StartupNotify=true
