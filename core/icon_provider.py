@@ -2,11 +2,16 @@ from PyQt6.QtGui import QIcon
 
 import platform
 
-from core.app_indexer import get_startmenu_apps
-
+from core.app_indexer import (
+    get_installed_apps
+)
 
 IS_WINDOWS = (
     platform.system() == "Windows"
+)
+
+IS_LINUX = (
+    platform.system() == "Linux"
 )
 
 if IS_WINDOWS:
@@ -17,22 +22,15 @@ DEFAULT_ICON = QIcon(
     "assets/icons/default.svg"
 )
 
-APPS_CACHE = get_startmenu_apps()
-
 
 def get_app_icon(app_name):
 
-    if not IS_WINDOWS:
-
-        return DEFAULT_ICON
-
-    print("\n====================")
-    print(f"Buscando icono para: {app_name}")
+    apps_cache = get_installed_apps()
 
     app = next(
         (
             a
-            for a in APPS_CACHE
+            for a in apps_cache
             if a["name"] == app_name
         ),
         None
@@ -40,12 +38,38 @@ def get_app_icon(app_name):
 
     if not app:
 
-        print("Aplicación no encontrada en cache")
+        return DEFAULT_ICON
+
+    # ==================================================
+    # LINUX
+    # ==================================================
+
+    if IS_LINUX:
+
+        icon_name = app.get(
+            "icon",
+            ""
+        )
+
+        if icon_name:
+
+            icon = QIcon.fromTheme(
+                icon_name
+            )
+
+            if not icon.isNull():
+
+                print(
+                    f"Icono Linux encontrado: {icon_name}"
+                )
+
+                return icon
 
         return DEFAULT_ICON
 
-    print("Registro encontrado:")
-    print(app)
+    # ==================================================
+    # WINDOWS
+    # ==================================================
 
     try:
 
@@ -59,48 +83,18 @@ def get_app_icon(app_name):
 
         target = shortcut.Targetpath
 
-        print(
-            f"Shortcut: {app['path']}"
-        )
-
-        print(
-            f"Target: {target}"
-        )
-
         if not target:
-
-            print(
-                "Target vacío"
-            )
 
             return DEFAULT_ICON
 
         icon = QIcon(target)
 
-        print(
-            f"QIcon.isNull(): {icon.isNull()}"
-        )
-
         if icon.isNull():
-
-            print(
-                "Qt NO pudo extraer icono del exe"
-            )
 
             return DEFAULT_ICON
 
-        print(
-            "Icono cargado correctamente"
-        )
-
         return icon
 
-    except Exception as e:
-
-        print(
-            "ERROR obteniendo icono:"
-        )
-
-        print(e)
+    except Exception:
 
         return DEFAULT_ICON
