@@ -4,21 +4,29 @@ from PyQt6.QtWidgets import QApplication
 
 from ui.start_menu import StartMenu
 
+from core.paths import (
+    STYLES_DIR
+)
+
 
 def load_styles(app):
 
     with open(
-        "styles/theme.qss",
+        STYLES_DIR / "theme.qss",
         "r",
         encoding="utf-8"
     ) as file:
 
-        app.setStyleSheet(file.read())
+        app.setStyleSheet(
+            file.read()
+        )
 
 
 def main():
 
-    app = QApplication(sys.argv)
+    app = QApplication(
+        sys.argv
+    )
 
     load_styles(app)
 
@@ -26,7 +34,9 @@ def main():
 
     menu.show()
 
-    sys.exit(app.exec())
+    sys.exit(
+        app.exec()
+    )
 
 
 if __name__ == "__main__":

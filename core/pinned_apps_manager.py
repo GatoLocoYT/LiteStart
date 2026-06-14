@@ -1,10 +1,10 @@
 # pinned_apps_manager.py
 import json
 from pathlib import Path
-
-PINNED_APPS_FILE = Path(
-    "config/pinned_apps.json"
+from core.paths import (
+    CONFIG_DIR
 )
+PINNED_APPS_FILE = CONFIG_DIR / "pinned_apps.json"
 
 
 def load_pinned_apps():

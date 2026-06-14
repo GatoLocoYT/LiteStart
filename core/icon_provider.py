@@ -1,6 +1,9 @@
 from PyQt6.QtGui import QIcon
 
 import platform
+from core.paths import (
+    ASSETS_DIR
+)
 
 from core.app_indexer import (
     get_installed_apps
@@ -19,7 +22,11 @@ if IS_WINDOWS:
 
 
 DEFAULT_ICON = QIcon(
-    "assets/icons/default.svg"
+    str(
+        ASSETS_DIR
+        / "icons"
+        / "default.svg"
+    )
 )
 
 
