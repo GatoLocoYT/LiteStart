@@ -17,6 +17,9 @@ from ui.pinned_apps import PinnedApps
 from ui.power_menu import PowerButton
 from ui.search_bar import SearchBar
 from ui.search_results import SearchResults
+from core.launcher import (
+    launch_app as launch_system_app
+)
 
 from core.constants import (
     WINDOW_WIDTH,
@@ -215,6 +218,14 @@ class StartMenu(QWidget):
         self.pinned_apps.app_clicked.connect(
             self.on_pinned_app_clicked
         )
+        
+        self.search_results.pinned_changed.connect(
+            self.pinned_apps.reload_apps
+        )
+
+        self.pinned_apps.pinned_changed.connect(
+            self.pinned_apps.reload_apps
+        )
 
         # ==================================================
         # BARRA INFERIOR
@@ -282,10 +293,13 @@ class StartMenu(QWidget):
     # ======================================================
 
     def launch_app(self, app_name):
-
-        print(
-            f"Ejecutando: {app_name}"
+        success = launch_system_app(
+            app_name
         )
+
+        if success:
+            self.close()
+        
 
     def on_pinned_app_clicked(self, app_name):
 

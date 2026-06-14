@@ -1,16 +1,27 @@
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import (
+    pyqtSignal,
+    Qt
+)
 
 from PyQt6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QPushButton,
-    QLabel
+    QLabel,
+    QMenu
+)
+from PyQt6.QtGui import QGuiApplication
+
+from core.pinned_apps_manager import (
+    pin_app
 )
 
 
 class SearchResults(QWidget):
 
     result_clicked = pyqtSignal(str)
+
+    pinned_changed = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -46,6 +57,72 @@ class SearchResults(QWidget):
 
                 widget.deleteLater()
 
+    def show_context_menu(
+        self,
+        button,
+        position
+    ):
+
+        menu = QMenu()
+
+        menu.setStyleSheet("""
+            QMenu {
+                background-color: #FFFFFF;
+                border: 1px solid #E5E5E5;
+                padding: 4px;
+            }
+
+            QMenu::item {
+                padding: 8px 24px;
+                color: #1C1C1C;
+            }
+
+            QMenu::item:selected {
+                background-color: #F2F2F2;
+                border-radius: 4px;
+            }
+        """)
+
+        open_action = menu.addAction(
+            "Abrir"
+        )
+        menu.addSeparator()
+        
+        pin_action = menu.addAction(
+            "Anclar al inicio"
+        )
+
+        copy_action = menu.addAction(
+            "Copiar nombre"
+        )
+
+        selected_action = menu.exec(
+            button.mapToGlobal(position)
+        )
+
+        if selected_action == open_action:
+
+            self.result_clicked.emit(
+                button.text()
+            )
+
+        elif selected_action == pin_action:
+
+            pin_app(
+                button.text()
+            )
+
+            print(
+                f"Anclada: {button.text()}"
+            )
+
+            self.pinned_changed.emit()
+
+        elif selected_action == copy_action:
+            QGuiApplication.clipboard().setText(
+                button.text()
+            )
+
     def create_result_button(
         self,
         text,
@@ -60,6 +137,19 @@ class SearchResults(QWidget):
 
         button.clicked.connect(
             lambda: self.result_clicked.emit(text)
+        )
+
+        button.setContextMenuPolicy(
+            Qt.ContextMenuPolicy.CustomContextMenu
+        )
+
+        button.customContextMenuRequested.connect(
+            lambda pos,
+            btn=button:
+            self.show_context_menu(
+                btn,
+                pos
+            )
         )
 
         return button
