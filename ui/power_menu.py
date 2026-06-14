@@ -2,7 +2,12 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QMenu
 )
-
+from core.power_actions import (
+    suspend,
+    restart,
+    shutdown,
+    logout
+)
 
 class PowerButton(QPushButton):
 
@@ -40,19 +45,19 @@ class PowerButton(QPushButton):
         )
 
         suspend_action.triggered.connect(
-            lambda: print("Presionado Suspender")
+            suspend
         )
 
         restart_action.triggered.connect(
-            lambda: print("Presionado Reiniciar")
+            restart
         )
 
         shutdown_action.triggered.connect(
-            lambda: print("Presionado Apagar")
+            shutdown
         )
 
         logout_action.triggered.connect(
-            lambda: print("Presionado Cerrar sesión")
+            logout
         )
 
         self.setMenu(menu)
