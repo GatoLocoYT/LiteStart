@@ -147,12 +147,46 @@ class PinnedApps(QWidget):
 
         pinned_apps = load_pinned_apps()
 
-        for index, app_name in enumerate(pinned_apps):
+        if not pinned_apps:
+
+            empty_label = QLabel(
+                "Ancla aplicaciones desde la búsqueda"
+            )
+
+            empty_label.setObjectName(
+                "EmptyPinnedApps"
+            )
+
+            empty_label.setAlignment(
+                Qt.AlignmentFlag.AlignCenter
+            )
+
+            self.grid.addWidget(
+                empty_label,
+                0,
+                0,
+                1,
+                4
+            )
+
+            return
+
+        for index, app_name in enumerate(
+            pinned_apps
+        ):
 
             row = index // 4
 
             col = index % 4
 
-            app = AppButton(app_name, self.app_clicked.emit, self.pinned_changed.emit)
+            app = AppButton(
+                app_name,
+                self.app_clicked.emit,
+                self.pinned_changed.emit
+            )
 
-            self.grid.addWidget(app, row, col)
+            self.grid.addWidget(
+                app,
+                row,
+                col
+            )

@@ -1,3 +1,4 @@
+# pinned_apps_manager.py
 import json
 from pathlib import Path
 
