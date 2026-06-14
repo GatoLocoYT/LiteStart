@@ -218,7 +218,7 @@ class StartMenu(QWidget):
         self.pinned_apps.app_clicked.connect(
             self.on_pinned_app_clicked
         )
-        
+
         self.search_results.pinned_changed.connect(
             self.pinned_apps.reload_apps
         )
@@ -411,14 +411,13 @@ class StartMenu(QWidget):
 
         screen = QApplication.primaryScreen()
 
-        geometry = (
-            screen.availableGeometry()
-        )
+        geometry = screen.availableGeometry()
 
-        x = 10
+        x = geometry.x() + 10
 
         y = (
-            geometry.height()
+            geometry.y()
+            + geometry.height()
             - self.height()
             - 10
         )
