@@ -5,6 +5,7 @@ import configparser
 DESKTOP_DIRS = [
     Path("/usr/share/applications"),
     Path.home() / ".local/share/applications",
+    Path("/var/lib/snapd/desktop/applications"),
 ]
 
 
