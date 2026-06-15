@@ -17,9 +17,7 @@ from core.paths import (
     STYLES_DIR,
     ASSETS_DIR
 )
-from core.hotkey_manager import (
-    HotkeyManager
-)
+
 
 def load_styles(app):
 
@@ -45,25 +43,7 @@ def main():
     menu = StartMenu()
 
     menu.show()
-    def toggle_menu():
 
-        if menu.isVisible():
-
-            menu.hide()
-
-        else:
-
-            menu.show()
-
-            menu.raise_()
-
-            menu.activateWindow()
-        
-    hotkeys = HotkeyManager(
-        toggle_menu
-    )
-
-    hotkeys.start()
 
     print(
         "Tray disponible:",
