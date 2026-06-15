@@ -38,12 +38,29 @@ def main():
         sys.argv
     )
 
+    app.setApplicationName(
+        "LiteStart"
+    )
+
+    app.setDesktopFileName(
+        "LiteStart"
+    )
+
+    app.setWindowIcon(
+        QIcon(
+            str(
+                ASSETS_DIR
+                / "icons"
+                / "icon.svg"
+            )
+        )
+    )
+
     load_styles(app)
 
     menu = StartMenu()
 
     menu.show_menu()
-
 
     print(
         "Tray disponible:",
