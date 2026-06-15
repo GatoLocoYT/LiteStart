@@ -9,7 +9,13 @@ from PyQt6.QtWidgets import (
     QScrollArea,
 )
 
-from PyQt6.QtCore import Qt, QTimer, QPropertyAnimation
+from PyQt6.QtCore import (
+    Qt,
+    QTimer,
+    QPropertyAnimation,
+    QEasingCurve,
+    QPoint
+)
 
 from core.search_engine import search
 
@@ -33,13 +39,23 @@ class StartMenu(QWidget):
         super().__init__()
 
         self.menu_open = False
-        self.fade_animation = QPropertyAnimation(
-        self,
-        b"windowOpacity"
+        self.slide_animation = QPropertyAnimation(
+            self,
+            b"pos"
         )
 
-        self.fade_animation.setDuration(
-            150
+        self.slide_animation.setDuration(
+            180
+        )
+
+        self.slide_animation.setEasingCurve(
+            QEasingCurve.Type.OutCubic
+        )
+
+        self.closing_animation = False
+
+        self.slide_animation.finished.connect(
+            self.on_animation_finished
         )
 
         self.setup_ui()
@@ -390,41 +406,49 @@ class StartMenu(QWidget):
 
     def hide_menu(self):
 
-        self.fade_animation.stop()
+        self.closing_animation = True
 
-        self.fade_animation.setStartValue(
-            1.0
+        self.slide_animation.stop()
+
+        self.slide_animation.setStartValue(
+            self.pos()
         )
 
-        self.fade_animation.setEndValue(
-            0.0
+        self.slide_animation.setEndValue(
+            QPoint(
+                self.base_position.x(),
+                self.base_position.y() + 20
+            )
         )
 
-        self.fade_animation.finished.connect(
-            self.hide
-        )
-
-        self.fade_animation.start()
-    
+        self.slide_animation.start()
     def show_menu(self):
 
-        self.setWindowOpacity(
-            0.0
+        self.closing_animation = False
+
+        self.move(
+            self.base_position.x(),
+            self.base_position.y() + 20
         )
 
         self.show()
 
-        self.fade_animation.stop()
+        self.slide_animation.stop()
 
-        self.fade_animation.setStartValue(
-            0.0
+        self.slide_animation.setStartValue(
+            self.pos()
         )
 
-        self.fade_animation.setEndValue(
-            1.0
+        self.slide_animation.setEndValue(
+            self.base_position
         )
 
-        self.fade_animation.start()
+        self.slide_animation.start()
+    def on_animation_finished(self):
+
+        if self.closing_animation:
+
+            self.hide()
 
     def focusOutEvent(self, event):
 
@@ -470,6 +494,11 @@ class StartMenu(QWidget):
         )
 
         self.move(
+            x,
+            y
+        )
+
+        self.base_position = QPoint(
             x,
             y
         )
