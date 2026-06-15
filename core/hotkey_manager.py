@@ -11,10 +11,22 @@ class HotkeyManager:
 
     def start(self):
 
+        print(
+            "HotkeyManager iniciado"
+        )
+
         self.listener = keyboard.GlobalHotKeys(
             {
-                "<ctrl>+<space>": self.callback
+                "<ctrl>+<space>": self.on_hotkey
             }
         )
 
         self.listener.start()
+
+    def on_hotkey(self):
+
+        print(
+            "HOTKEY DETECTADA"
+        )
+
+        self.callback()
