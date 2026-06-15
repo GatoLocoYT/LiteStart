@@ -40,21 +40,6 @@
 
 ---
 
-## Capturas
-
-### Menú Principal
-
-> Próximamente
-
-### Búsqueda de Aplicaciones
-
-> Próximamente
-
-### Aplicaciones Ancladas
-
-> Próximamente
-
----
 
 ## Objetivos
 
