@@ -17,7 +17,7 @@ class HotkeyManager:
 
         self.listener = keyboard.GlobalHotKeys(
             {
-                "<ctrl>+<space>": self.on_hotkey
+                "<ctrl>+<alt>+<h>": self.on_hotkey
             }
         )
 
