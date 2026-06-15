@@ -57,7 +57,7 @@ def main():
             str(
                 ASSETS_DIR
                 / "icons"
-                / "default.svg"
+                / "icon.svg"
             )
         )
     )

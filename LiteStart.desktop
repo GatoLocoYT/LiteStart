@@ -8,7 +8,7 @@ Exec=/home/usuario/LiteStart/venv/bin/python /home/usuario/LiteStart/main.py
 
 Path=/home/usuario/LiteStart
 
-Icon=/home/usuario/LiteStart/assets/icons/default.svg
+Icon=/home/usuario/LiteStart/assets/icons/icon.svg
 
 Categories=Utility;
 StartupNotify=true

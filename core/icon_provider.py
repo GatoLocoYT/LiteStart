@@ -25,7 +25,7 @@ DEFAULT_ICON = QIcon(
     str(
         ASSETS_DIR
         / "icons"
-        / "default.svg"
+        / "icon.svg"
     )
 )
 
