@@ -6,3 +6,10 @@ core/__pycache__/
 venv/
 *.pyc
 __pycache__/
+dist/
+build/
+venv/
+*.egg-info/
+LiteStart-v1.0.0-alpha/
+LiteStart-v1.0.0-alpha.tar.gz
+LiteStart-v1.0.0-alpha-py3-none-any.whl
