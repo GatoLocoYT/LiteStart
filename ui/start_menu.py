@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
     QScrollArea,
 )
 
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer, QPropertyAnimation
 
 from core.search_engine import search
 
@@ -33,6 +33,14 @@ class StartMenu(QWidget):
         super().__init__()
 
         self.menu_open = False
+        self.fade_animation = QPropertyAnimation(
+        self,
+        b"windowOpacity"
+        )
+
+        self.fade_animation.setDuration(
+            150
+        )
 
         self.setup_ui()
         self.position_window()
@@ -382,7 +390,41 @@ class StartMenu(QWidget):
 
     def hide_menu(self):
 
-        self.hide()
+        self.fade_animation.stop()
+
+        self.fade_animation.setStartValue(
+            1.0
+        )
+
+        self.fade_animation.setEndValue(
+            0.0
+        )
+
+        self.fade_animation.finished.connect(
+            self.hide
+        )
+
+        self.fade_animation.start()
+    
+    def show_menu(self):
+
+        self.setWindowOpacity(
+            0.0
+        )
+
+        self.show()
+
+        self.fade_animation.stop()
+
+        self.fade_animation.setStartValue(
+            0.0
+        )
+
+        self.fade_animation.setEndValue(
+            1.0
+        )
+
+        self.fade_animation.start()
 
     def focusOutEvent(self, event):
 

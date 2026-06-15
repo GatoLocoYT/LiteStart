@@ -42,7 +42,7 @@ def main():
 
     menu = StartMenu()
 
-    menu.show()
+    menu.show_menu()
 
 
     print(
@@ -93,7 +93,7 @@ def main():
     )
 
     show_action.triggered.connect(
-        menu.show
+        menu.show_menu
     )
 
     exit_action.triggered.connect(
@@ -110,11 +110,11 @@ def main():
 
             if menu.isVisible():
 
-                menu.hide()
+                menu.hide_menu()
 
             else:
 
-                menu.show()
+                menu.show_menu()
 
     tray.activated.connect(
         on_tray_activated
